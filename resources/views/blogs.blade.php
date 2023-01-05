@@ -7,10 +7,17 @@
         </div>
         <div class="container">
         @foreach($models as $model)
-            <div class="block">
-            <p class="content">{{ $model['content'] }}</p>
-                <p class="author">Автор: {{ $model['author'] }}</p>
-            </div>
+                <form action="{{ route('blog.delete') }}" class="block" method="post">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                    <p class="content">{{ $model['content'] }}</p>
+                    <div class="lower_block">
+                        @if ($permissions == 'moderator')
+                                <button class="btn" type="submit"><i class="fa fa-trash"></i></button>
+                                <input type="hidden" value="{{ $model['id'] }}" name="id">
+                        @endif
+                        <p class="author">Автор: {{ $model['author'] }}</p>
+                    </div>
+                </form>
         @endforeach
         </div>
     </div>
@@ -27,9 +34,10 @@
         }
 
         .author {
-            text-align: right;
+            width: 90%;
             margin-right: 10px;
             font-weight: bold;
+            text-align: right;
         }
 
         .block {
@@ -59,6 +67,18 @@
         a:hover {
             background-color: gray;
             border: 1px solid black;
+        }
+
+        .lower_block {
+            width: 100%;
+        }
+
+        .lower_block button, .lower_block p {
+            display: inline-block;
+        }
+
+        .btn {
+            margin-right: 60px;
         }
     </style>
 @endsection

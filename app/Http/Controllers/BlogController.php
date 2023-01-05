@@ -11,15 +11,12 @@ class BlogController extends Controller
 {
     public function showblog() {
         $models = Article::all();
-        $users = User::all();
 
         $data = session()->all();
 
-        if (count($data) == 4) {
-            return view('blogs')->with('models', $models)->with('authorized', 'true');
-        } else {
-            return view('blogs')->with('models', $models)->with('authorized', 'false');
-        }
+        if (count($data) == 5) {
+            return view('blogs')->with('models', $models)->with('authorized', 'true')->with('permissions', $data['permissions']);
+        }else {return redirect()->to('/login');}
     }
 
     public function show() {
@@ -55,5 +52,16 @@ class BlogController extends Controller
 
                 return redirect()->to('/profile');
             }
+    }
+
+    public function delete(BlogRequest $request) {
+        $data = $request->all();
+
+
+        Article::where('id', '=', $data['id'])->delete();
+        $models = Article::all();
+        $permissions = session()->all()['permissions'];
+
+        return view('blogs')->with('models', $models)->with('authorized', 'true')->with('permissions', $permissions);
     }
 }

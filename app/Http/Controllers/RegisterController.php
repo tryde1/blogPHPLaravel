@@ -27,6 +27,7 @@ class RegisterController extends Controller
         $user->password = $password;
         $user->surname = '';
         $user->phonenumber = '';
+        $user->permissions = 'user';
 
         $user->save();
 

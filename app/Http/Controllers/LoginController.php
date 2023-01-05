@@ -28,6 +28,7 @@ class LoginController extends Controller
 
             if ($password_bd == $password) {
                 session()->put('id', $user['id']);
+                session()->put('permissions', $user['permissions']);
                 return redirect()->to('/profile');
             }
         }

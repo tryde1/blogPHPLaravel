@@ -28,3 +28,4 @@ Route::get('/profile/blog', 'BlogController@show')->name('blog.show');
 Route::post('/profile/blog', 'BlogController@create')->name('blog.create');
 
 Route::get('/blog', 'BlogController@showblog')->name('blogs.show');
+Route::post('/blog', 'BlogController@delete')->name('blog.delete');
