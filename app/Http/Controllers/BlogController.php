@@ -40,9 +40,12 @@ class BlogController extends Controller
 
             $content = $data['content'];
 
-            if (strlen($content) > 2000) {
+            if (strlen($content) > 20000) {
                 return redirect()->to('/profile/blog')->withErrors(['error' => 'Длина статьи слишком большая']);
-            } else {
+            }elseif ($content == null) {
+                return redirect()->to('/profile/blog');
+            }
+            else {
                 $article = new Article();
 
                 $article->content = $content;
