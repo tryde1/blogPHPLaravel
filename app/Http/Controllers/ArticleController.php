@@ -7,7 +7,7 @@ use App\Http\Requests\BlogRequest;
 use App\User;
 use Illuminate\Http\Request;
 
-class BlogController extends Controller
+class ArticleController extends Controller
 {
     public function showblog() {
         $models = Article::all();
@@ -33,7 +33,6 @@ class BlogController extends Controller
             $id = session()->get('id');
 
             $user = User::where('id', '=', $id)->first();
-            $email = $user['email'];
 
             $content = $data['content'];
 
@@ -44,11 +43,10 @@ class BlogController extends Controller
             }
             else {
                 $article = new Article();
-
                 $article->content = $content;
-                $article->author = $email;
+                $article->user_id = $id;
 
-                $article->save();
+                $user->articles()->save($article);
 
                 return redirect()->to('/profile');
             }

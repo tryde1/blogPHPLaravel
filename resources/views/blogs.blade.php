@@ -8,14 +8,17 @@
         <div class="container">
         @foreach($models as $model)
                 <form action="{{ route('blog.delete') }}" class="block" method="post">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                     <p class="content">{{ $model['content'] }}</p>
                     <div class="lower_block">
-                        @if ($permissions == 'moderator')
+                        @if ($permissions == 'moderator' || $permissions == 'admin')
                                 <button class="btn" type="submit"><i class="fa fa-trash"></i></button>
                                 <input type="hidden" value="{{ $model['id'] }}" name="id">
                         @endif
-                        <p class="author">Автор: {{ $model['author'] }}</p>
+                        <p class="author">Автор: @php
+                            $article = $model;
+                            $email = $article->user->email;
+                            echo $email;
+                                @endphp</p>
                     </div>
                 </form>
         @endforeach
