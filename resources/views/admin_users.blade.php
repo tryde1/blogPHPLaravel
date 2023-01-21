@@ -3,16 +3,22 @@
 @section('content')
     <div class="outer">
 
-        <form action="{{route('find.Action')}}" method="post" class="search_field">
+        <div class="search_field">
 
-            <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-            <input type="hidden" name="action" value="usersSearch">
+            <form action="{{route('find.Action')}}" method="post" class="search_field">
 
-            <input type="text" name="value">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                <input type="hidden" name="action" value="usersSearch">
 
-            <button type="submit" class="search_btn">Найти</button>
+                <input type="text" name="value">
 
-        </form>
+                <button type="submit" class="search_btn">Найти</button>
+
+            </form>
+
+            <a href="{{ route('find.Action') }}"><i class="fa fa-times" aria-hidden="true"></i></a>
+
+        </div>
 
         <div class="inner">
             @foreach($users as $user)
@@ -93,6 +99,7 @@
 
     .search_field {
         margin-bottom: 10px;
+        display: inline-block;
     }
 
     .search_btn {
