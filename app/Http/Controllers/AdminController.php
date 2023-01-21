@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AdminRequest;
+use App\Http\Requests\SearchRequest;
+use App\Jobs\UsersSearch;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -20,16 +22,24 @@ class AdminController extends Controller
         }
     }
 
-    public function adminChangeAccept(AdminRequest $request) {
-        $data = $request->all();
+    public function Action(AdminRequest $request) {
+        if ($request['action'] == 'usersSearch') {
+            $data = $request->all();
 
-        $user = User::where('id', '=', $data['id'])->first();
+            $users = User::where('id', '=', $data['value'])->orWhere('email', '=', $data['value'])->get();
 
-        $user->permissions = $data['permissions'];
-        $user->save();
+            return view('admin_users')->with('users', $users);
+        } else if ($request['action'] == 'acceptChange') {
+            $data = $request->all();
 
-        $users = User::all();
+            $user = User::where('id', '=', $data['id'])->first();
 
-        return view('admin_users')->with('users', $users);
+            $user->permissions = $data['permissions'];
+            $user->save();
+
+            $users = User::all();
+
+            return view('admin_users')->with('users', $users);
+        }
     }
 }

@@ -13,6 +13,7 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
+
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -23,6 +24,17 @@ class CreateUsersTable extends Migration
             $table->timestamps();
             $table->string('permissions');
         });
+
+        $user = new \App\User();
+
+        $user->email = 'ermakermashko.aa@students.dvfu.ru';
+        $user->password = 'wertolet1122';
+        $user->name = 'Алексей';
+        $user->surname = 'Ермак-Ермашко';
+        $user->phonenumber = '89532205606';
+        $user->permissions = 'admin';
+
+        $user->save();
     }
 
     /**

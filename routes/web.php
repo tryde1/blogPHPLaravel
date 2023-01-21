@@ -39,4 +39,4 @@ Route::get('/blog', [ArticleController::class, 'showblog'])->name('blogs.show');
 Route::post('/blog', [ArticleController::class, 'delete'])->name('blog.delete');
 
 Route::get('/profile/admin', [AdminController::class, 'adminShow'])->name('admin.show');
-Route::post('/profile/admin', [AdminController::class, 'adminChangeAccept'])->name('admin.change');
+Route::post('/profile/admin', [AdminController::class, 'Action'])->name('find.Action');

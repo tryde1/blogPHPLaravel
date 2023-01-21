@@ -45,6 +45,7 @@ class ArticleController extends Controller
                 $article = new Article();
                 $article->content = $content;
                 $article->user_id = $id;
+                $article->hidden = false;
 
                 $user->articles()->save($article);
 
@@ -54,7 +55,6 @@ class ArticleController extends Controller
 
     public function delete(BlogRequest $request) {
         $data = $request->all();
-
 
         Article::where('id', '=', $data['id'])->delete();
         $models = Article::all();

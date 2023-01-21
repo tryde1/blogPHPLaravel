@@ -59,6 +59,7 @@
             border: 1px solid black;
             border-radius: 20px;
             padding: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
         }
 
         .title {

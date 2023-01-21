@@ -24,7 +24,7 @@ class AdminRequest extends FormRequest
     public function rules()
     {
         return [
-            'id', 'permissions'
+
         ];
     }
 }

@@ -8,6 +8,9 @@
         <div class="container">
         @foreach($models as $model)
                 <form action="{{ route('blog.delete') }}" class="block" method="post">
+
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+
                     <p class="content">{{ $model['content'] }}</p>
                     <div class="lower_block">
                         @if ($permissions == 'moderator' || $permissions == 'admin')
