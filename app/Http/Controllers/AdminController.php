@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Article;
 use App\Http\Requests\AdminRequest;
 use App\Http\Requests\SearchRequest;
 use App\Jobs\UsersSearch;
@@ -18,7 +19,26 @@ class AdminController extends Controller
         if ($url[3] == "profile" && $data['permissions'] == 'admin') {
             $users = User::all();
 
-            return view('admin_users')->with('users', $users);
+            return view('Administrator Panel/admin_users')->with('users', $users);
+        }
+        else {
+            return redirect()->to('/profile');
+        }
+    }
+
+    public function showActivity() {
+        $data = session()->all();
+
+        $url = explode('/', $data['_previous']['url']);
+
+        if ($url[3] == "profile" && $data['permissions'] == 'admin') {
+            $users = User::orderBy('updated_at', 'desc')->get();
+            $articles = Article::orderBy('updated_at', 'desc')->get();
+
+            return view('Administrator Panel/admin_activity')->with('users', $users)->with('articles', $articles);
+        }
+        else {
+            return redirect()->to('/profile');
         }
     }
 
@@ -28,7 +48,7 @@ class AdminController extends Controller
 
             $users = User::where('id', '=', $data['value'])->orWhere('email', '=', $data['value'])->get();
 
-            return view('admin_users')->with('users', $users);
+            return view('Administrator Panel/admin_users')->with('users', $users);
         } else if ($request['action'] == 'acceptChange') {
             $data = $request->all();
 
@@ -39,7 +59,7 @@ class AdminController extends Controller
 
             $users = User::all();
 
-            return view('admin_users')->with('users', $users);
+            return view('Administrator Panel/admin_users')->with('users', $users);
         }
     }
 }

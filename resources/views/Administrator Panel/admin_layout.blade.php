@@ -12,9 +12,15 @@
 
 <div class="widget">
     <ul class="widget-list">
-        <li><a href="">Пользователи</a></li>
-        <li><a href="">Записи</a></li>
-        <li><a href="">Активность</a></li>
+            <div class="users_button">
+                <li><a href="{{ route('users.show') }}">Пользователи</a></li>
+            </div>
+            <div class="article_button">
+                <li><a href="" >Записи</a></li>
+            </div>
+            <div class="activity_button">
+                <li><a href="{{ route('activity.show') }}" >Активность</a></li>
+            </div>
     </ul>
 </div>
 
@@ -37,7 +43,7 @@
         width: 15%;
     }
 
-    .widget-list > li {
+    .widget-list > div > li {
         padding: 10px;
         list-style-type: none;
     }
@@ -55,5 +61,15 @@
 
     body {
         background: linear-gradient(to right, #333 10%, #093a57 30%, #093a57 70%, #333 90%);
+    }
+
+    * {
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .outer {
+        padding-left: 17%;
+        width: 97%;
+        margin-top: 10px;
     }
 </style>

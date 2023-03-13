@@ -6,6 +6,8 @@ use App\Article;
 use App\Http\Requests\BlogRequest;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use function GuzzleHttp\Promise\all;
 
 class ArticleController extends Controller
 {
@@ -14,14 +16,19 @@ class ArticleController extends Controller
 
         $data = session()->all();
 
-        if (count($data) == 5) {
-            return view('blogs')->with('models', $models)->with('authorized', 'true')->with('permissions', $data['permissions']);
-        }else {return redirect()->to('/login');}
+        if (Arr::has($data, 'id')) {
+            $user = User::where('id', '=', $data['id'])->first();
+
+            return view('Articles/blogs')->with('models', $models)->with('auth', true)->with('permissions', $user['permissions'])->with('id', $user['id']);
+        }
+        else {
+            return view('Articles/blogs')->with('models', $models)->with('permissions', 'user')->with('auth', false);
+        }
     }
 
     public function show() {
         if (session()->has('id')) {
-            return view('blog_form');
+            return view('Articles/blog_form');
         } else {
             return redirect()->to('/login');
         }
@@ -37,9 +44,9 @@ class ArticleController extends Controller
             $content = $data['content'];
 
             if (strlen($content) > 20000) {
-                return redirect()->to('/profile/blog')->withErrors(['error' => 'Длина статьи слишком большая']);
+                return redirect()->to('/blog/create')->withErrors(['error' => 'Длина статьи слишком большая']);
             }elseif ($content == null) {
-                return redirect()->to('/profile/blog');
+                return redirect()->to('/blog/create');
             }
             else {
                 $article = new Article();
@@ -49,7 +56,7 @@ class ArticleController extends Controller
 
                 $user->articles()->save($article);
 
-                return redirect()->to('/profile');
+                return redirect()->to('/blog');
             }
     }
 
@@ -58,8 +65,50 @@ class ArticleController extends Controller
 
         Article::where('id', '=', $data['id'])->delete();
         $models = Article::all();
-        $permissions = session()->all()['permissions'];
 
-        return view('blogs')->with('models', $models)->with('authorized', 'true')->with('permissions', $permissions);
+        $id = session()->all();
+        $user = User::where('id', '=', $id['id'])->first();
+
+        return view('Articles/blogs')->with('models', $models)->with('auth', true)->with('permissions', $user['permissions'])->with('id', $user['id']);
+    }
+
+    public function action(BlogRequest $request) {
+        $action = $request->all()['action'];
+        $data = $request->all();
+
+            if ($action == 'deleteArticle') {
+                Article::where('id', '=', $data['id'])->delete();
+                $models = Article::all();
+
+                $id = session()->all();
+                $user = User::where('id', '=', $id['id'])->first();
+
+                return view('Articles/blogs')->with('models', $models)->with('auth', true)->with('permissions', $user['permissions'])->with('id', $user['id']);
+            }
+            else if ($action == 'hideArticle') {
+                $article = Article::where('id', '=', $data['id'])->first();
+                $article->hidden = true;
+                $article->save();
+
+                $models = Article::all();
+
+                $id = session()->all();
+                $user = User::where('id', '=', $id['id'])->first();
+
+                return view('Articles/blogs')->with('models', $models)->with('auth', true)->with('permissions', $user['permissions'])->with('id', $user['id']);
+            }
+            elseif ($action == 'showArticle') {
+                $article = Article::where('id', '=', $data['id'])->first();
+                $article->hidden = false;
+                $article->save();
+
+                $models = Article::all();
+
+                $id = session()->all();
+                $user = User::where('id', '=', $id['id'])->first();
+
+                return view('Articles/blogs')->with('models', $models)->with('auth', true)->with('permissions', $user['permissions'])->with('id', $user['id']);
+
+            }
     }
 }

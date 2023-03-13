@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->timestamps();
             $table->string('permissions');
+            $table->string('image');
         });
 
         $user = new \App\User();
@@ -33,6 +34,7 @@ class CreateUsersTable extends Migration
         $user->surname = 'Ермак-Ермашко';
         $user->phonenumber = '89532205606';
         $user->permissions = 'admin';
+        $user->image = '';
 
         $user->save();
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\HomeRequest;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Psy\Util\Str;
 
 class HomeController extends Controller
@@ -22,7 +23,7 @@ class HomeController extends Controller
             $surname = $values['surname'];
             $phonenumber = $values['phonenumber'];
 
-            return view('profile')->with('email', $email)->with('name', $name)->with('surname', $surname)->with('phonenumber', $phonenumber);
+            return view('Main Branch/profile')->with('email', $email)->with('name', $name)->with('surname', $surname)->with('phonenumber', $phonenumber)->with('id', $id);
         } else {
             return redirect()->to('/login');
         }
@@ -50,6 +51,18 @@ class HomeController extends Controller
         $value->name = $name;
         $value->surname = $surname;
         $value->phonenumber = $phoneNumber;
+
+        if ($request->hasFile('avatar')) {
+
+            $destinationPath = public_path('avatars/');
+
+            $fileName = $value->id . '.jpg';
+
+            $request->file('avatar')->move($destinationPath, $fileName);
+
+            $value->image  = $destinationPath . $fileName;
+        }
+
         $value->save();
 
         return redirect()->to('/profile');

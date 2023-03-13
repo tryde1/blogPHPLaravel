@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\Input;
 class LoginController extends Controller
 {
     public function show() {
-        return view('login');
+        return view('Main Branch/login');
     }
 
     public function login(LoginRequest $request) {

@@ -32,11 +32,13 @@ Route::post('/profile', [HomeController::class, 'changeProfile'])->name('profile
 
 Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
 
-Route::get('/profile/blog', [ArticleController::class, 'show'])->name('blog.show');
-Route::post('/profile/blog', [ArticleController::class, 'create'])->name('blog.create');
+Route::get('blog/create', [ArticleController::class, 'show'])->name('blog.show');
+Route::post('blog/create', [ArticleController::class, 'create'])->name('blog.create');
 
 Route::get('/blog', [ArticleController::class, 'showblog'])->name('blogs.show');
-Route::post('/blog', [ArticleController::class, 'delete'])->name('blog.delete');
+Route::post('/blog', [ArticleController::class, 'action'])->name('blog.action');
 
-Route::get('/profile/admin', [AdminController::class, 'adminShow'])->name('admin.show');
-Route::post('/profile/admin', [AdminController::class, 'Action'])->name('find.Action');
+Route::get('/profile/admin/users', [AdminController::class, 'adminShow'])->name('users.show');
+Route::post('/profile/admin/users', [AdminController::class, 'Action'])->name('find.Action');
+
+Route::get('/profile/admin/activity', [AdminController::class, 'showActivity'])->name('activity.show');
